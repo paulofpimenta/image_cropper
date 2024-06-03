@@ -1,0 +1,21 @@
+version: "3.9"
+name: image-cropper
+
+services:
+    backend:
+        image: image-cropper
+        container_name: image-cropper
+        build:
+            context: .
+            dockerfile: ./backend/Dockerfile
+        ports:
+            - "9000:80"
+    frontend:
+        image: image-cropper-ui
+        container_name: image-cropper-ui
+        build:
+            context: ./my-demo-ui
+        ports:
+            - "4200:80"
+        depends_on:
+            - backend
