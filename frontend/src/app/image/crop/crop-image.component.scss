@@ -1,0 +1,22 @@
+image-cropper {
+    max-height: 66vh;
+  }
+  
+  .cropper-wrapper {
+    min-height: 300px;
+    position: relative;
+  }
+  
+  .croppeed-wrapper {
+
+    position: relative;
+    text-align: center;
+    margin:50px 10px 10px 10px;
+    border: none;
+    display: block;
+    max-width:530px;
+    max-height:280px;
+    width: auto;
+    height: auto;
+  }
+  

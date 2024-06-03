@@ -1,0 +1,29 @@
+<div class="form-group" style="text-align: center;">
+  <p>
+    <mat-form-field>
+        <mat-label for="name">Route name</mat-label>
+        <input matInput type="text" id="title" name="title" [(ngModel)]="enteredName" />
+        <mat-hint>Enter rout route name</mat-hint>
+    </mat-form-field>
+  </p>
+  <p>
+    <mat-form-field>
+
+    <input matInput type="file" (change)="fileChangeEvent($event)" />
+    <image-cropper
+        [imageChangedEvent]="imageChangedEvent"
+        [maintainAspectRatio]="true"
+        [aspectRatio]="4 / 3"
+        format="png"
+        (imageCropped)="imageCropped($event)"
+        (imageLoaded)="imageLoaded($event)"
+        (cropperReady)="cropperReady()"
+        (loadImageFailed)="loadImageFailed()"
+    ></image-cropper>
+    
+    <img [src]="croppedImage" />
+    </mat-form-field>
+
+  </p>
+  </div>
+  

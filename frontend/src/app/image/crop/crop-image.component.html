@@ -1,0 +1,76 @@
+<mat-sidenav-container>
+  
+  <mat-sidenav mode="side" opened mode="side" position="start" style="position: fixed;">
+    <br>
+
+    <div style="text-align: center;">
+        <mat-form-field>
+          <mat-label for="name">Upload a file</mat-label>
+          <button mat-icon-button matPrefix (click)="f_input.click()">
+            <mat-icon>attach_file</mat-icon>
+          </button>
+          <input type="text" readonly matInput [formControl]="display" />
+          <input type="file" hidden #f_input (change)="fileChangeEvent($event);handleFileInputChange(f_input.files)" style="text-align: center;"
+          />
+          <mat-error>this field is required</mat-error>
+
+        </mat-form-field>
+    </div>
+
+    
+    <div style="text-align: center;">
+        <img [src]="croppedImage" *ngIf="croppedImageMeta" class="croppeed-wrapper" [style.border]="croppedImage ? '1px solid black' : 'none'"  />
+    </div>
+    
+    <div style="text-align: center;">  
+      <mat-slide-toggle 
+        class="example-margin"
+        [color]="color"
+        [(ngModel)]="clientSide"
+        *ngIf="!croppedImage">
+      </mat-slide-toggle>
+      <h4>Crop image on {{clientSide ? 'client' : 'server'}}</h4>
+    </div>
+ 
+
+    <div *ngIf="croppedImageMeta">
+
+      <mat-list>
+        <mat-list-item>Height : {{croppedImageMeta.height}}</mat-list-item>
+        <mat-divider></mat-divider>
+        <mat-list-item>Width : {{croppedImageMeta.width}}</mat-list-item>
+        <mat-divider></mat-divider>
+        <mat-list-item>Cropped image size : {{croppedImageMeta.size}}</mat-list-item>
+      </mat-list>
+
+      <div style="text-align: center;" *ngIf="!clientSide ;else elsetest">
+        <button mat-raised-button color="primary" *ngIf="fileName">Save cropped image</button>
+      </div>
+      <ng-template  #elsetest>
+        <div style="text-align: center;">
+          <button mat-raised-button color="primary" *ngIf="fileName">Download cropped image</button>
+        </div>
+      </ng-template>
+  
+    </div>
+  </mat-sidenav>
+
+
+  <mat-sidenav-content style="overflow: hidden;background-color: white;">
+    <h2 *ngIf="fileName" style="text-align: center;margin-top: 40px;">{{fileName}}</h2>
+    <div class="cropper-wrapper" style="margin:10px;">
+      <image-cropper
+          [imageChangedEvent]="imageChangedEvent"
+          format="png"
+          [aspectRatio]="1/1"
+          [maintainAspectRatio]="false"
+          (imageCropped)="imageCropped($event)"
+          (cropperReady)="imageLoaded()"
+          (loadImageFailed)="loadImageFailed()">
+      </image-cropper>   
+    </div>
+
+
+  </mat-sidenav-content>
+
+</mat-sidenav-container>
