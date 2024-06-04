@@ -1,4 +1,4 @@
-package micro.user.ouicodedata.com.configurations;
+package micro.image.ouicodedata.com.configurations;
 
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.info.Contact;

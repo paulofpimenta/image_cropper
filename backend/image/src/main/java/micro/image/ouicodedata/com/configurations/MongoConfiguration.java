@@ -1,4 +1,4 @@
-package micro.user.ouicodedata.com.configurations;
+package micro.image.ouicodedata.com.configurations;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

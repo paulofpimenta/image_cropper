@@ -4,17 +4,22 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <parent>
-        <groupId>ouicodedata.com</groupId>
-        <artifactId>microservices</artifactId>
-        <version>0.0.1-SNAPSHOT</version>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <version>3.2.5</version>
+        <relativePath/> <!-- lookup parent from repository -->
     </parent>
+    <groupId>ouicodedata.com</groupId>
+    <artifactId>microservices</artifactId>
+    <version>0.0.1-SNAPSHOT</version>
 
-    <artifactId>image</artifactId>
+    <name>ImageCropper</name>
+    <description>Demo project for a ImageCropper Projet</description>
 
     <properties>
         <java.version>21</java.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <maven.compiler.source>21</maven.compiler.source>
+        <maven.compiler.source> 21</maven.compiler.source>
         <maven.compiler.target>21</maven.compiler.target>
     </properties>
 
@@ -47,7 +52,6 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-aop</artifactId>
         </dependency>
-
 
         <!--Embedded mongodb dependency-->
         <dependency>
@@ -107,6 +111,9 @@
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
+                <configuration>
+                    <mainClass>micro.image.ouicodedata.com.ImageCropperApplication</mainClass>
+                </configuration>
             </plugin>
         </plugins>
     </build>

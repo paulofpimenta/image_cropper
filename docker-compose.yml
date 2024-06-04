@@ -1,13 +1,11 @@
-version: '3'
 services:
     backend:
-        image: web-backend:latest
-        container_name: image-cropper
+        container_name: image-cropper-back
         build:
             context: ./backend/image
             dockerfile: ./Dockerfile
         ports:
-            - "8080:80"
+            - "8080:8080"
     frontend:
         container_name: image-cropper-ui
         build:

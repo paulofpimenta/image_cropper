@@ -1,21 +1,14 @@
-# Build
-FROM  maven:3.9.6-eclipse-temurin-21-alpine AS build
+FROM openjdk:21-jdk
+MAINTAINER ouicodedata.com
+
+WORKDIR /workspace/image-cropper-back
+
+COPY .mvn/ .mvn
+COPY mvnw pom.xml ./
+RUN ./mvnw dependency:go-offline
+
+COPY src ./src
 
 
-# Create an application directory
-RUN mkdir -p /app
-
-# The /app directory should act as the main application directory
-WORKDIR /app
-
-
-COPY backend/image .
-COPY src /build/src/
-
-RUN mvn package
-
-# Package
-WORKDIR /app
-
-COPY --from=MAVEN_BUILD /build/target/docker-boot-intro-0.1.0.jar /app/
-ENTRYPOINT ["java", "-jar", "docker-boot-intro-0.1.0.jar"]
+CMD ["./mvnw", "spring-boot:run"]
+EXPOSE 8080
