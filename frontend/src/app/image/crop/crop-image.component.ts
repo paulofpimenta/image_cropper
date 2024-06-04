@@ -16,6 +16,7 @@ import { ImageService } from '../service/image.service';
 import { HttpClientModule } from '@angular/common/http';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { ThemePalette } from '@angular/material/core';
+import { MatRadioModule } from '@angular/material/radio';
 
 @Component({
   selector: 'app-add-user',
@@ -24,7 +25,7 @@ import { ThemePalette } from '@angular/material/core';
   standalone:true,
   imports: [FormsModule,MatFormFieldModule,MatInputModule,ImageCropperComponent,
     ReactiveFormsModule,MatIconModule,MatSidenavModule,MatButtonModule,CommonModule,
-    MatListModule, MatDividerModule,HttpClientModule,MatSlideToggleModule],
+    MatListModule, MatDividerModule,HttpClientModule,MatSlideToggleModule,MatRadioModule],
 })
 export class CropImageComponent {
 
@@ -42,26 +43,14 @@ export class CropImageComponent {
   display: FormControl = new FormControl("", Validators.required);
   fileStore!: FileList;
   fileName!:string;
-
-  //Mat-Toggle
-  color: ThemePalette = 'accent';
-  clientSide = true;
-
-
-  public options = [
-    { value: true, label: 'True' },
-    { value: false, label: 'False' }
-  ];
-
-  public listColors = ['primary', 'accent', 'warn'];
-  public listAccepts = [ null, ".png"];
-  
   public files: any;
   maxSize= 16;
 
-  events: string[] = [];
-  opened: boolean = true;
+  //Mat-Radio
+  processingOnClient: string = 'Client';
+  processingChoices: string[] = ['Client', 'Server'];
 
+  serverOn: boolean = false
   
   constructor(private sanitizer: DomSanitizer,private imageService: ImageService) {
     this.fileControl = new FormControl(this.files, [Validators.required, MaxSizeValidator(this.maxSize * 1024)])
@@ -83,25 +72,28 @@ export class CropImageComponent {
     this.imageChangedEvent = event;
     const target = event.target as HTMLInputElement;
     if (target.files && target.files.length > 0) {
-      console.log(target.files[0].name);
       this.fileName = target.files[0].name
     }
   }
   
   imageCropped(event: ImageCroppedEvent) {
-      if (this.clientSide) {
+      if (this.processingOnClient == 'Client') {
         this.croppedImage = this.sanitizer.bypassSecurityTrustUrl(event.objectUrl || event.base64 || '');
         this.imageService.toCroppedImageMeta(event).subscribe(imageMeta => {this.croppedImageMeta = imageMeta })
         console.log("Cropped image data on client : ", this.croppedImage)
       } else {
           this.imageService.toCroppedImageMeta(event).subscribe(imageMeta => {this.croppedImageMeta = imageMeta })
-          this.imageService.uploadImage(this.fileStore[0],"test",JSON.stringify(event.imagePosition)).subscribe ( response=> {
-            if (response) {
-              let base64 = response.result.base64
-              this.croppedImage = this.sanitizer.bypassSecurityTrustResourceUrl('data:image/png;base64,' + base64);
-              console.log("Cropped image data on server : ", this.croppedImage)
-            }
-          })
+          this.imageService.uploadImage(this.fileStore[0],"test",JSON.stringify(event.imagePosition)).subscribe ( 
+            response=> {
+                this.serverOn = true
+                let base64 = response.result.base64
+                this.croppedImage = this.sanitizer.bypassSecurityTrustResourceUrl('data:image/png;base64,' + base64);
+                console.log("Cropped image data on server : ", this.croppedImage)
+              },
+            error => {
+                console.error("Error cropping image on server : ",error)
+                this.croppedImage = this.sanitizer.bypassSecurityTrustResourceUrl('/assets/images/server_off.webp');
+            })
       }
   }
   

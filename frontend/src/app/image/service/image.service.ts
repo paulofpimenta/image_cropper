@@ -49,7 +49,6 @@ export class ImageService {
       let base64WithoutFileReader = base64.split(',')[1]
       croppedImageMeta.base64 = base64WithoutFileReader
     })
-    console.log(event.cropperPosition)
     croppedImageMeta.position = event.cropperPosition;
     croppedImageMeta.height = event.height;
     croppedImageMeta.width = event.width;

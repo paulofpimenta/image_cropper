@@ -12,8 +12,8 @@ public class SwaggerConfiguration {
     @Bean
     public OpenAPI openAPI() {
         return new OpenAPI()
-                .info(new Info().title("User API Demo").version("0.1").description("A Demo API to register users")
-                        .contact(new Contact().name("ATOS").url("http://atos.net").email("paulo-fernando.pimenta@atos.net")));
+                .info(new Info().title("Image Cropper API").version("0.1").description("A API to crop images")
+                        .contact(new Contact().name("Ouicodedata").url("http://ouicodedata.com").email("pfpimenta@gmail.com")));
     }
 
 }

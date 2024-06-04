@@ -22,14 +22,17 @@
         <img [src]="croppedImage" *ngIf="croppedImageMeta" class="croppeed-wrapper" [style.border]="croppedImage ? '1px solid black' : 'none'"  />
     </div>
     
-    <div style="text-align: center;">  
-      <mat-slide-toggle 
-        class="example-margin"
-        [color]="color"
-        [(ngModel)]="clientSide"
-        *ngIf="!croppedImage">
-      </mat-slide-toggle>
-      <h4>Crop image on {{clientSide ? 'client' : 'server'}}</h4>
+
+    <div style="text-align: center;" *ngIf="!croppedImageMeta">  
+      <label>Crop processing : </label>
+      <mat-radio-group
+        aria-labelledby="example-radio-group-label"
+        class="radio-group"
+        [(ngModel)]="processingOnClient">
+        <mat-radio-button class="radio-button" *ngFor="let choice of processingChoices" [value]="choice">
+          {{choice}}
+        </mat-radio-button>
+      </mat-radio-group>
     </div>
  
 
@@ -43,16 +46,16 @@
         <mat-list-item>Cropped image size : {{croppedImageMeta.size}}</mat-list-item>
       </mat-list>
 
-      <div style="text-align: center;" *ngIf="!clientSide ;else elsetest">
+      <div style="text-align: center;" *ngIf="!processingOnClient ;else server">
         <button mat-raised-button color="primary" *ngIf="fileName">Save cropped image</button>
       </div>
-      <ng-template  #elsetest>
+      <ng-template  #server>
         <div style="text-align: center;">
-          <button mat-raised-button color="primary" *ngIf="fileName">Download cropped image</button>
+          <button mat-raised-button color="primary" *ngIf="fileName" [disabled]="!serverOn">Download cropped image</button>
+          <h4 *ngIf="!serverOn">The server is offline</h4>
         </div>
       </ng-template>
-  
-    </div>
+      </div>
   </mat-sidenav>
 
 
