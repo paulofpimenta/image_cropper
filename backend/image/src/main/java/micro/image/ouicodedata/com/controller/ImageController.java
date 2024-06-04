@@ -45,7 +45,7 @@ public class ImageController {
             @ApiResponse(responseCode = "400", description = "Image could not be cropped",
                     content = @Content)
     })
-    @PostMapping(value = "/upload",consumes=MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(value = "/upload",produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<InfoDetails> cropImage(
                             @RequestParam("title")
                                 @Parameter( name = "title",required = true, description = "The image's title") String title,
