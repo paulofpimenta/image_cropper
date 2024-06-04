@@ -16,5 +16,13 @@ The application is deployed on a docker contrainer with a docker compose. The do
 docker compose up
 ```
 
-from the application root folder
+from the application root folder. The application runs on `http://localhost:4200/`
 
+
+# API documentation
+
+The api is document with OpenApi3. Once the aplication is running, you can access the documentation in the link below : 
+
+```shell
+http://localhost:8080/api/v1/image-cropper
+```
