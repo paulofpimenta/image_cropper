@@ -24,6 +24,9 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.sql.Timestamp;
 import java.time.Instant;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
 
 
 @Tag(name = "Image Cropper")
@@ -35,6 +38,9 @@ import java.time.Instant;
 @Slf4j
 public class ImageController {
 
+    private final String transactionTime = ZonedDateTime.now(ZoneId.of("Europe/Paris"))
+                                                                .format(DateTimeFormatter
+                                                                        .ofPattern("uuuu.MM.dd.HH.mm.ss"));
     private final ImageServiceImpl imageService;
 
     @TrackTime
@@ -45,24 +51,20 @@ public class ImageController {
             @ApiResponse(responseCode = "400", description = "Image could not be cropped",
                     content = @Content)
     })
-    @PostMapping(value = "/upload",produces = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(value = "/upload",consumes = MediaType.MULTIPART_FORM_DATA_VALUE,produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<InfoDetails> cropImage(
-                            @RequestParam("title")
-                                @Parameter( name = "title",required = true, description = "The image's title") String title,
-                            @RequestParam("image")
-                                @Parameter( name = "image",required = true, description = "The submitted multipart image")MultipartFile image,
-                            @RequestParam("bbox")
-                            @Parameter( name = "bbox",required = true, description = "The image's bounding box")
-                                String bbox) throws IOException {
-        Gson gson = new Gson();
-        Bbox cropZone = gson.fromJson(bbox, Bbox.class);
-        String base64 = imageService.cropImage(title, image, cropZone);
-        String message = base64.isEmpty() ? "Image could not be cropped" : "Imaged cropped successfully";
-        ImageUploadResponse result = new ImageUploadResponse(title,base64);
+                            @Parameter( name = "title",required = true, description = "The image's title") String title,
+                            @RequestPart(name = "image",required = true) MultipartFile image,
+                            @Parameter(name = "bbox",required = true, description = "The image's bounding box") String bbox)
+            throws IOException {
+                Gson gson = new Gson();
+                Bbox cropZone = gson.fromJson(bbox, Bbox.class);
+                String base64 = imageService.cropImage(title, image, cropZone);
+                String message = base64.isEmpty() ? "Image could not be cropped" : "Imaged cropped successfully";
+                ImageUploadResponse result = new ImageUploadResponse(title, base64);
 
-        InfoDetails infoDetails = new InfoDetails(HttpStatus.OK.value(),message,Timestamp.from(Instant.now()),result);
-        return new ResponseEntity<>(infoDetails,HttpStatus.OK);
-
+                InfoDetails infoDetails = new InfoDetails(HttpStatus.OK.value(), message, Timestamp.from(Instant.now()), result);
+                return new ResponseEntity<>(infoDetails, HttpStatus.OK);
     }
 
     @TrackTime
