@@ -21,7 +21,7 @@ from the application root folder. The application runs on `http://localhost:4200
 
 # 4. API documentation
 
-The api is document with OpenApi3. Once the aplication is running, you can access the documentation in the link below : 
+The api is documented with OpenApi3. Once the aplication is running, you can access the documentation in the link below : 
 
 ```shell
 http://localhost:8080/api/v1/image-cropper
