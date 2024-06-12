@@ -19,7 +19,7 @@ export class ListImagesComponent {
   imagetest: SafeResourceUrl;
   images: ImageDocument[]
   sanitedPaths: SafeResourceUrl[] = []
-  constructor(private iamgeService: ImageService,private sanitizer: DomSanitizer) {}
+  constructor(private iamgeService: ImageService) {}
 
   ngOnInit() {
 

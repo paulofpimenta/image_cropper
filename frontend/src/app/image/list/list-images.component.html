@@ -6,16 +6,18 @@
         <mat-card-subtitle>Cropped at : </mat-card-subtitle>
         </mat-card-header>
         <!--<img mat-card-image src="https://material.angular.io/assets/img/examples/shiba2.jpg" alt="Photo of a Shiba Inu"> -->
-        <img mat-card-image class="imgs" src="{{'data:image/jpg;base64,' + image.base64}}" alt="Photo of a Shiba Inu">
+        <div style="text-align: center;">
+            <img mat-card-image class="imgs" src="{{'data:image/png;base64,' + image.base64}}" alt="Photo of a Shiba Inu">
+        </div>
 
         <mat-card-content>
         <p>
         </p>
         </mat-card-content>
         <mat-card-actions align="end">
-            <button mat-button>LIKE</button>
-            <div fxFlex></div>
-            <button mat-button>SHARE</button>
+            <button mat-raised-button color="primary" disabled>Download</button>
+            <div fxFlex style="margin-left: 10px;"></div>
+            <button mat-raised-button color="primary" disabled>Share</button>
         </mat-card-actions>
     </mat-card>
 </div>

@@ -36,7 +36,7 @@
     </div>
  
 
-    <div *ngIf="croppedImageMeta">
+    <div *ngIf="croppedImageMeta" style="text-align: center;">
 
       <mat-list>
         <mat-list-item>Height : {{croppedImageMeta.height}}</mat-list-item>
@@ -55,13 +55,14 @@
           <h4 *ngIf="!serverOn">The server is offline</h4>
         </div>
       </ng-template>
-      </div>
+    </div>
+
   </mat-sidenav>
 
 
   <mat-sidenav-content style="overflow: hidden;background-color: white;">
     <h2 *ngIf="fileName" style="text-align: center;margin-top: 40px;">{{fileName}}</h2>
-    <div class="cropper-wrapper" style="margin:10px;">
+    <div class="cropper-wrapper" style="margin:10px; text-align: center;">
       <image-cropper
           [imageChangedEvent]="imageChangedEvent"
           format="png"
