@@ -12,7 +12,6 @@ import { ListImagesComponent } from './image/list/list-images.component';
 @NgModule({
   declarations: [
     DetailsComponent,
-    ListImagesComponent,
   ],
   imports: [
     BrowserModule,

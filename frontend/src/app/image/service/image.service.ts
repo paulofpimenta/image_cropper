@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, of } from 'rxjs';
-import { CroppedImageMeta, ImagePosition } from '../model/CroppedImage';
+import { CroppedImageMeta, ImageDocument, ImagePosition } from '../model/CroppedImage';
 import { ImageCroppedEvent } from 'ngx-image-cropper';
-import { Infodetails } from '../model/InfoDetails';
+import { InfoDetails } from '../model/InfoDetails';
 
 
 const baseUrl = 'http://localhost:8080/api/v1/image';
@@ -16,16 +16,16 @@ export class ImageService {
 
   constructor(private http: HttpClient) { }
 
-  getAllImages(): Observable<CroppedImageMeta[]> {
-    return this.http.get<CroppedImageMeta[]>(baseUrl);
+  getAllImages(): Observable<InfoDetails> {
+    return this.http.get<InfoDetails>(`${baseUrl}/all`);
   }
 
   getImage(id: any): Observable<any> {
     return this.http.get(`${baseUrl}/${id}`);
   }
 
-  createImage(data: any): Observable<any> {
-    return this.http.post(baseUrl, data);
+  saveImage(imageDocument:ImageDocument): Observable<any> {
+    return this.http.put(`${baseUrl}/save`, imageDocument);
   }
 
   deleteImage(id: any): Observable<any> {
@@ -78,13 +78,13 @@ export class ImageService {
     ${["Bytes","KiB","MiB","GiB","TiB","PiB","EiB","ZiB","YiB"][d]}`
   }
   
-  uploadImage(image: File,title:string,bbox:string): Observable<Infodetails> {
+  uploadImage(image: File,title:string,bbox:string): Observable<InfoDetails> {
     const formData = new FormData();
     formData.append('image', image);
     formData.append('title', title);
     formData.append('bbox', bbox);
 
-    return this.http.post<Infodetails>(baseUrl + '/upload', formData)
+    return this.http.post<InfoDetails>(baseUrl + '/upload', formData)
   }
   
   

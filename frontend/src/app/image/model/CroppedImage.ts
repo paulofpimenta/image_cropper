@@ -12,3 +12,8 @@ export class CroppedImageMeta {
     size: string;
     base64: string;
 }
+
+export class ImageDocument {
+    title: string;
+    base64: string;
+}

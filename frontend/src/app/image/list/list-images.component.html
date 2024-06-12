@@ -1,1 +1,21 @@
-<p>list works!</p>
+<div class="col-md-3 mx-auto my-5" *ngFor="let image of images">
+    <mat-card class="card">
+        <mat-card-header>
+        <div mat-card-avatar class="header-image"></div>
+        <mat-card-title>{{image.title}}</mat-card-title>
+        <mat-card-subtitle>Cropped at : </mat-card-subtitle>
+        </mat-card-header>
+        <!--<img mat-card-image src="https://material.angular.io/assets/img/examples/shiba2.jpg" alt="Photo of a Shiba Inu"> -->
+        <img mat-card-image class="imgs" src="{{'data:image/jpg;base64,' + image.base64}}" alt="Photo of a Shiba Inu">
+
+        <mat-card-content>
+        <p>
+        </p>
+        </mat-card-content>
+        <mat-card-actions align="end">
+            <button mat-button>LIKE</button>
+            <div fxFlex></div>
+            <button mat-button>SHARE</button>
+        </mat-card-actions>
+    </mat-card>
+</div>

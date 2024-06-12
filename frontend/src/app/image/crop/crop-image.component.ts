@@ -11,7 +11,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { CommonModule } from '@angular/common';
 import { MatDividerModule} from '@angular/material/divider';
 import { MatListModule} from '@angular/material/list';
-import { CroppedImageMeta } from '../model/CroppedImage';
+import { CroppedImageMeta, ImageDocument } from '../model/CroppedImage';
 import { ImageService } from '../service/image.service';
 import { HttpClientModule } from '@angular/common/http';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
@@ -19,7 +19,7 @@ import { ThemePalette } from '@angular/material/core';
 import { MatRadioModule } from '@angular/material/radio';
 
 @Component({
-  selector: 'app-add-user',
+  selector: 'app-crop-image',
   templateUrl: './crop-image.component.html',
   styleUrls: ['./crop-image.component.scss'],
   standalone:true,
@@ -32,6 +32,7 @@ export class CropImageComponent {
   //Imagecroper  
   imageChangedEvent: Event | null = null;
   croppedImage: SafeUrl;
+  croppedImageUrl: string | null |  undefined = '';
   croppedImageOnServer: any;
 
   aspectRatio = 4 / 3;
@@ -54,7 +55,7 @@ export class CropImageComponent {
   
   constructor(private sanitizer: DomSanitizer,private imageService: ImageService) {
     this.fileControl = new FormControl(this.files, [Validators.required, MaxSizeValidator(this.maxSize * 1024)])
-    }
+  }
 
   ngOnInit() {
     this.fileControl.valueChanges.subscribe((files: any) => {
@@ -77,24 +78,27 @@ export class CropImageComponent {
   }
   
   imageCropped(event: ImageCroppedEvent) {
-      if (this.processingOnClient == 'Client') {
-        this.croppedImage = this.sanitizer.bypassSecurityTrustUrl(event.objectUrl || event.base64 || '');
-        this.imageService.toCroppedImageMeta(event).subscribe(imageMeta => {this.croppedImageMeta = imageMeta })
-        console.log("Cropped image data on client : ", this.croppedImage)
-      } else {
-          this.imageService.toCroppedImageMeta(event).subscribe(imageMeta => {this.croppedImageMeta = imageMeta })
-          this.imageService.uploadImage(this.fileStore[0],"test",JSON.stringify(event.imagePosition)).subscribe ( 
-            response=> {
-                this.serverOn = true
-                let base64 = response.result.base64
-                this.croppedImage = this.sanitizer.bypassSecurityTrustResourceUrl('data:image/png;base64,' + base64);
-                console.log("Cropped image data on server : ", this.croppedImage)
-              },
-            error => {
-                console.error("Error cropping image on server : ",error)
-                this.croppedImage = this.sanitizer.bypassSecurityTrustResourceUrl('/assets/images/server_off.webp');
-            })
-      }
+    // 1. Create a metadata object based on the image cropped event
+    this.imageService.toCroppedImageMeta(event).subscribe(imageMeta => { this.croppedImageMeta = imageMeta })
+
+    // 2. Extract cropped image by using a bypass secerity url
+    this.croppedImage = this.sanitizer.bypassSecurityTrustUrl(event.objectUrl || event.base64 || '');
+
+    this.croppedImageUrl = event.objectUrl;
+
+    // 3. Check if the crop processing in on client or server
+    if (this.processingOnClient == 'Client') {
+        console.info("Cropped image data on client : ", this.croppedImage)
+    } else {
+        this.imageService.uploadImage(this.fileStore[0],"test",JSON.stringify(event.imagePosition)).subscribe ( { 
+          next :(v: { result: { base64: any; }; }) => {
+              this.serverOn = true
+              console.info("Cropped image data on server : ", this.croppedImage)},
+          error: (e: string) => {
+              console.error("Error cropping image on server : ",e)
+              this.croppedImage = this.sanitizer.bypassSecurityTrustResourceUrl('/assets/images/server_off.webp');}
+        })
+    }
   }
   
   imageLoaded() {
@@ -118,6 +122,27 @@ export class CropImageComponent {
         this.display.patchValue("");
       }
     }
+  }
+
+  downloadImage() {
+    if (this.croppedImageUrl) {
+        const a = document.createElement('a');
+        a.href = this.croppedImageUrl;
+        a.download = "crop.png";
+        document.body.appendChild(a);
+        a.click();
+        a.remove();
+        console.log(this.croppedImage)
+    }
+  }
+
+  saveImage() {
+    if (this.croppedImageMeta) {
+      let imageDocument:ImageDocument = {title:"dsdsd",base64:this.croppedImageMeta.base64}
+      this.imageService.saveImage(imageDocument).subscribe(res=>{console.log("Resp: ", res)})
+    }
+
+
   }
   
 }

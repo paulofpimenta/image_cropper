@@ -46,12 +46,12 @@
         <mat-list-item>Cropped image size : {{croppedImageMeta.size}}</mat-list-item>
       </mat-list>
 
-      <div style="text-align: center;" *ngIf="!processingOnClient ;else server">
-        <button mat-raised-button color="primary" *ngIf="fileName">Save cropped image</button>
+      <div style="text-align: center;" *ngIf="processingOnClient=='Client' ;else onserver"> <!-- On client-->
+        <button mat-raised-button color="primary" *ngIf="fileName" (click)="downloadImage()">Download cropped image</button>
       </div>
-      <ng-template  #server>
+      <ng-template  #onserver> <!-- On Server-->
         <div style="text-align: center;">
-          <button mat-raised-button color="primary" *ngIf="fileName" [disabled]="!serverOn">Download cropped image</button>
+          <button mat-raised-button color="primary" *ngIf="fileName" [disabled]="!serverOn" (click)="saveImage()">Save cropped image on server</button>
           <h4 *ngIf="!serverOn">The server is offline</h4>
         </div>
       </ng-template>

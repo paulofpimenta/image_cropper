@@ -17,5 +17,5 @@ public interface ImageService {
 
     String cropImage(String title, MultipartFile file, Bbox bbox)  throws IOException;
 
-    ImageDocument saveImage(String title, String base64) throws IOException;
+    ImageDocument saveImage(ImageDocument imageDocument);
 }

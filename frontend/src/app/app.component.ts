@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { ImageComponent } from './image/image.component';
 import { RouterModule } from '@angular/router';
 import { MatButtonModule } from '@angular/material/button';
+import { ListImagesComponent } from './image/list/list-images.component';
 
 
 @Component({
@@ -9,6 +10,7 @@ import { MatButtonModule } from '@angular/material/button';
   standalone:true,
   imports: [
     ImageComponent,
+    ListImagesComponent,
     RouterModule,
     MatButtonModule,
   ],

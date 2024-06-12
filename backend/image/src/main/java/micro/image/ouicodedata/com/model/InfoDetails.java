@@ -8,7 +8,7 @@ import java.sql.Timestamp;
 
 public record InfoDetails (int httpStatus,String message,
                            @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy hh:mm:ss")
-                            @JsonProperty("datetime") Timestamp transactionTime,
+                           @JsonProperty("datetime") Timestamp transactionTime,
                             Object result){
 
 }

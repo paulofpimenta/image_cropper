@@ -1,17 +1,17 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { UserComponent } from './image/image.component';
-import { AddUserComponent } from './image/crop/crop-image.component';
+import { ImageComponent } from './image/image.component';
+import { CropImageComponent } from './image/crop/crop-image.component';
 
 const routes: Routes = [{
   path: '',
   title: 'Home',
-  component:UserComponent,
+  component:ImageComponent,
 },
   //children:[]
 {
   path: 'add_user',
-  component: AddUserComponent,
+  component: CropImageComponent,
   title: 'New user'
 }
 ];

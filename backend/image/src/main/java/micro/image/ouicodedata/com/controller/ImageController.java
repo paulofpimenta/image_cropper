@@ -27,6 +27,7 @@ import java.time.Instant;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 
 
 @Tag(name = "Image Cropper")
@@ -75,15 +76,31 @@ public class ImageController {
             @ApiResponse(responseCode = "400", description = "Image cannot be saved",
                     content = @Content)
     })
-    @PostMapping(value = "/save",produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<InfoDetails> saveImage(@RequestParam("title") String title,
-                                                 @RequestParam("base64") String base64) throws IOException {
+    @PutMapping(value = "/save",consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<InfoDetails> saveImage(@RequestBody ImageDocument imageDocument) throws IOException {
 
-        ImageDocument imageDocument = imageService.saveImage(title, base64);
-        String message = imageDocument.getImage().length() == 0 ? "Image could not be saved" : "Imaged saved successfully";
-        ImageUploadResponse result = new ImageUploadResponse(title,base64);
+        ImageDocument result = imageService.saveImage(imageDocument);
+        String message = result != null ? "Imaged saved successfully" : "Image could not be saved" ;
+        InfoDetails infoDetails = new InfoDetails(HttpStatus.CREATED.value(),message,Timestamp.from(Instant.now()),result);
+        return new ResponseEntity<>(infoDetails,HttpStatus.OK);
 
-        InfoDetails infoDetails = new InfoDetails(HttpStatus.OK.value(),message,Timestamp.from(Instant.now()),result);
+    }
+
+    @TrackTime
+    @Operation(summary = "Get all stored images in the database")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "201", description = "Images were retrieved in the database ",
+                    content = { @Content(mediaType = "application/json") }),
+            @ApiResponse(responseCode = "400", description = "Images could not be retrieved",
+                    content = @Content)
+    })
+    @GetMapping(value = "/all",produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<InfoDetails> getImages() throws IOException {
+
+        List<ImageDocument> images = imageService.getImages();
+        String message = images.isEmpty() ? "No images found in the database" : images.size() + " image(s) found in the database";
+
+        InfoDetails infoDetails = new InfoDetails(HttpStatus.OK.value(),message,Timestamp.from(Instant.now()),images);
         return new ResponseEntity<>(infoDetails,HttpStatus.OK);
 
     }

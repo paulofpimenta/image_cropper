@@ -1,14 +1,14 @@
 import { Timestamp } from "rxjs"
 
-export interface ImageUploadResponse{
+export interface ImageUploadResponse {
     title:string,
     base64:string
 }
 
 
-export interface Infodetails{
+export interface InfoDetails {
     httpStatus:number,
     message:string,
     transactionTime:string,
-    result:ImageUploadResponse
+    result:any
 }

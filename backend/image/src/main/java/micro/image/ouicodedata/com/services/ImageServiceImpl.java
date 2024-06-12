@@ -46,11 +46,8 @@ public class ImageServiceImpl implements ImageService {
         return Base64.getEncoder().encodeToString(croppedImageAsByteArray);
     }
 
-    @Override
-    public ImageDocument saveImage(String title, String base64) throws IOException {
-        ImageDocument image = new ImageDocument(title);
-        byte[] imageAsByteArray = Base64.getEncoder().encode(base64.getBytes());
-        image.setImage(new Binary(BsonBinarySubType.BINARY, imageAsByteArray));
-        return imageRepository.insert(image);
+    public ImageDocument saveImage(ImageDocument imageDocument) {
+
+        return imageRepository.insert(imageDocument);
     }
 }

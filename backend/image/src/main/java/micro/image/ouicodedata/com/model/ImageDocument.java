@@ -21,7 +21,7 @@ public class ImageDocument {
     private String id;
     @NotEmpty(message = "Image title can not be empty")
     private String title;
-    private Binary image;
+    private String base64;
 
     public ImageDocument(String title) {
         super();
