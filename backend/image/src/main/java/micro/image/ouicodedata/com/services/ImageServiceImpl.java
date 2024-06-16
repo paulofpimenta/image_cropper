@@ -5,8 +5,6 @@ import micro.image.ouicodedata.com.model.Bbox;
 import micro.image.ouicodedata.com.model.ImageDocument;
 import micro.image.ouicodedata.com.repository.ImageRepository;
 import micro.image.ouicodedata.com.util.CropImage;
-import org.bson.BsonBinarySubType;
-import org.bson.types.Binary;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 

@@ -1,23 +1,35 @@
-<div class="col-md-3 mx-auto my-5" *ngFor="let image of images">
-    <mat-card class="card">
-        <mat-card-header>
-        <div mat-card-avatar class="header-image"></div>
-        <mat-card-title>{{image.title}}</mat-card-title>
-        <mat-card-subtitle>Cropped at : </mat-card-subtitle>
-        </mat-card-header>
-        <!--<img mat-card-image src="https://material.angular.io/assets/img/examples/shiba2.jpg" alt="Photo of a Shiba Inu"> -->
-        <div style="text-align: center;">
-            <img mat-card-image class="imgs" src="{{'data:image/png;base64,' + image.base64}}" alt="Photo of a Shiba Inu">
-        </div>
+<div *ngIf="images.length > 0; else noimage">
+    <div class="col-md-3 mx-auto my-5" >
+        <h3>{{images.length}} cropped image(s) found in the database</h3>
+        <mat-card class="card" *ngFor="let image of images">
+            <mat-card-header>
+                <div mat-card-avatar class="header-image"></div>
+                <mat-card-title>{{image.title}}</mat-card-title>
+                <mat-card-subtitle>Cropped at : </mat-card-subtitle>
+            </mat-card-header>
+            
+            <div style="text-align: center;">
+                <img mat-card-image class="imgs" src="{{'data:image/png;base64,' + image.base64}}" alt="Photo of a Shiba Inu">
+            </div>
 
-        <mat-card-content>
-        <p>
-        </p>
-        </mat-card-content>
-        <mat-card-actions align="end">
-            <button mat-raised-button color="primary" disabled>Download</button>
-            <div fxFlex style="margin-left: 10px;"></div>
-            <button mat-raised-button color="primary" disabled>Share</button>
-        </mat-card-actions>
-    </mat-card>
+            <mat-card-content>
+            <p>
+                Some metadata here
+            </p>
+            </mat-card-content>
+
+            <mat-card-actions align="end">
+                <button mat-raised-button color="primary" disabled>Download</button>
+                <div fxFlex style="margin-left: 10px;"></div>
+                <button mat-raised-button color="primary" disabled>Share</button>
+            </mat-card-actions>
+        </mat-card>
+    </div>
 </div>
+
+
+<ng-template  #noimage> <!-- No image-->
+    <div style="text-align: center;">
+        <h4>There are no images saved yet on the server</h4>
+    </div>
+</ng-template>

@@ -77,7 +77,7 @@ public class ImageController {
                     content = @Content)
     })
     @PutMapping(value = "/save",consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<InfoDetails> saveImage(@RequestBody ImageDocument imageDocument) throws IOException {
+    public ResponseEntity<InfoDetails> saveImage(@RequestBody ImageDocument imageDocument) {
 
         ImageDocument result = imageService.saveImage(imageDocument);
         String message = result != null ? "Imaged saved successfully" : "Image could not be saved" ;
@@ -95,7 +95,7 @@ public class ImageController {
                     content = @Content)
     })
     @GetMapping(value = "/all",produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<InfoDetails> getImages() throws IOException {
+    public ResponseEntity<InfoDetails> getImages()  {
 
         List<ImageDocument> images = imageService.getImages();
         String message = images.isEmpty() ? "No images found in the database" : images.size() + " image(s) found in the database";

@@ -22,13 +22,13 @@ public class ImageCropperRestExceptionHandler extends ResponseEntityExceptionHan
     public ResponseEntity<ErrorDetails> handleConstraintViolation(final ConstraintViolationException ex) {
         final List<String> errors = ex.getConstraintViolations().stream().map(ConstraintViolation::getMessage).collect(Collectors.toList());
         final ErrorDetails apiError = new ErrorDetails(HttpStatus.BAD_REQUEST.value(),"Image constraints violated", errors, Timestamp.from(Instant.now()));
-        return new ResponseEntity<ErrorDetails>(apiError, new HttpHeaders(), apiError.status());
+        return new ResponseEntity<>(apiError, new HttpHeaders(), apiError.status());
     }
 
     @ExceptionHandler({ ImageCropperException.class })
     public ResponseEntity<ErrorDetails> handleUserNotFound(final ImageCropperException ex) {
         final List<String> errors = ex.getMessage().lines().toList();
         final ErrorDetails apiError = new ErrorDetails(HttpStatus.NOT_FOUND.value(),"Image not found", errors, Timestamp.from(Instant.now()));
-        return new ResponseEntity<ErrorDetails>(apiError, new HttpHeaders(), apiError.status());
+        return new ResponseEntity<>(apiError, new HttpHeaders(), apiError.status());
     }
 }
