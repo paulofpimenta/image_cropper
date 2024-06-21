@@ -1,17 +1,20 @@
 services:
     backend:
-        container_name: image-cropper-back
-        build:
-            context: ./backend/image
-            dockerfile: ./Dockerfile
-        ports:
-            - "8080:8080"
+      container_name: image-cropper-back
+      build:
+        context: ./backend/image
+        dockerfile: ./Dockerfile
+        args:
+          - ENV=dev
+      ports:
+        - "8080:8080"
+
     frontend:
-        container_name: image-cropper-ui
-        build:
-            context: ./frontend
-            dockerfile: ./Dockerfile
-        ports:
-            - "4200:80"
-        depends_on:
-            - backend
+      container_name: image-cropper-ui
+      build:
+        context: ./frontend
+        dockerfile: ./Dockerfile
+      ports:
+        - "4200:80"
+      depends_on:
+        - backend

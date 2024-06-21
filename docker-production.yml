@@ -1,0 +1,28 @@
+services:
+    backend:
+      container_name: image-cropper-back
+      build:
+        context: ./backend/image
+        dockerfile: ./Dockerfile
+        args:
+          - ENV=prod
+      ports:
+        - "8080:8080"
+      depends_on:
+        - mongo_db
+
+    mongo_db:
+      container_name: image-cropper-mongodb
+      image: mongo
+      hostname: mongo
+      restart: always
+      ports:
+        - '27017:27017'
+      volumes:
+        - ./init-mongo.js:/docker-entrypoint-initdb.d/init-mongo.js:ro
+      environment:
+        MONGO_INITDB_ROOT_USERNAME: ${MONGO_INITDB_ROOT_USERNAME}
+        MONGO_INITDB_ROOT_PASSWORD: ${MONGO_INITDB_ROOT_PASSWORD}
+        MONGO_INITDB_DATABASE: ${MONGO_INITDB_DATABASE}
+        MONGO_USER: ${MONGO_USER}
+        MONGO_USER_PWD: ${MONGO_USER_PWD}

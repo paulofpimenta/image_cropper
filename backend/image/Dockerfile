@@ -1,6 +1,7 @@
 FROM openjdk:21-jdk
 MAINTAINER ouicodedata.com
 
+
 WORKDIR /workspace/image-cropper-back
 
 COPY .mvn/ .mvn
@@ -9,6 +10,8 @@ RUN ./mvnw dependency:go-offline
 
 COPY src ./src
 
+ARG ENV
 
-CMD ["./mvnw", "spring-boot:run"]
-EXPOSE 8080
+ENV profile=$ENV
+
+CMD ["./mvnw", "spring-boot:run", "-Dspring.profiles.active=${profile}"]
