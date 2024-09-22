@@ -26,3 +26,30 @@ services:
         - "8080:8080"
       depends_on:
         - mongo_db
+
+    web:
+      container_name: "image-cropper-front"
+      build:
+        context: ./backend/image
+        dockerfile: ./Dockerfile
+      ports:
+        - 80:80
+        - 443:443
+      volumes:
+        - ./frontend:/usr/src/app
+        - ./certbot/conf:/etc/letsencrypt # for certboot challenges
+        - ./certbot/www:/var/www/certbot # for letsencrypt certificates
+        #- ./etc/ssl/certs:/etc/ssl/certs
+      #links:
+        #- "fastapi" 
+    
+    certbot:
+      container_name: "certbot"
+      image: certbot/certbot
+      volumes:
+        - ./certbot/conf:/etc/letsencrypt # for certboot challenges
+        - ./certbot/www:/var/www/certbot # for letsencrypt certificates
+      command: certonly --webroot -w /var/www/certbot -d ${DOMAIN} --force-renew --agree-tos --email ${EMAIL}
+      depends_on:
+        - backend
+        #  - web
