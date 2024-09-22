@@ -10,7 +10,7 @@ services:
         - "8080:8080"
 
     frontend:
-      container_name: image-cropper-ui
+      container_name: image-cropper-front
       build:
         context: ./frontend
         dockerfile: ./Dockerfile
