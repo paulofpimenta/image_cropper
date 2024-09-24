@@ -15,9 +15,12 @@ ENV PATH="./node_modules/.bin:$PATH"
 COPY . ./
 RUN ng build --configuration production
 
-### STAGE 2:RUN ###
+## Run Nginx
+FROM nginx:latest
 FROM nginx as ngi
-COPY --from=build /dist/src/app/dist/image-cropper-ui /usr/share/nginx/html
+COPY --from=build /dist/src/app/image-cropper-ui /usr/share/nginx/html
 COPY /nginx.conf  /etc/nginx/conf.d/default.conf
 
 EXPOSE 80
+
+CMD ["nginx", "-g", "daemon off;"]  

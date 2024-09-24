@@ -1,5 +1,5 @@
 services:
-    mongo_db:
+    mongo_db: # Create a mongodb instance. Move to a dockerfile ?
       container_name: image-cropper-mongodb
       image: mongo
       hostname: mongo
@@ -26,6 +26,16 @@ services:
         - "8080:8080"
       depends_on:
         - mongo_db
+
+    frontend:
+      container_name: image-cropper-front
+      build:
+        context: ./frontend
+        dockerfile: ./Dockerfile
+      ports:
+        - "4200:80"
+      depends_on:
+        - backend
         
     certbot:
       container_name: "certbot"
