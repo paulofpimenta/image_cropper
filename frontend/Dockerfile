@@ -1,24 +1,26 @@
 ### STAGE 1:RUN ###
 FROM node:20.13-alpine as build
 
+# Create folder for node modules and set node user ownership on folder
+RUN mkdir -p /home/node/app/node_modules && chown -R node:node /home/node/app
+
 # Create a Virtual directory inside the docker image
-WORKDIR /dist/src/app
+WORKDIR /home/node/app
 
-# Run command in Virtual directory
-RUN npm cache clean --force
+COPY package.json ./
 
-COPY package.json package-lock.json ./
+USER node
+
 RUN npm install
 
-ENV PATH="./node_modules/.bin:$PATH"
+COPY --chown=node:node . .
 
-COPY . ./
 RUN ng build --configuration production
 
-## Run Nginx
+
+### STAGE 2:RUN NGINX ###
 FROM nginx:latest
-FROM nginx as ngi
-COPY --from=build /dist/src/app/image-cropper-ui /usr/share/nginx/html
+COPY --from=build  /home/node/appdist/image-cropper-ui /usr/share/nginx/html
 COPY /nginx.conf  /etc/nginx/conf.d/default.conf
 
 EXPOSE 80
