@@ -46,5 +46,5 @@ services:
       command: certonly --webroot -w /var/www/certbot -d ${DOMAIN} --force-renew --agree-tos --email ${EMAIL}
       depends_on:
         - backend
-        - web
+        - frontend
         - mongo_db
