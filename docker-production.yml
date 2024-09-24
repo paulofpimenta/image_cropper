@@ -26,6 +26,8 @@ services:
         - "8080:8080"
       depends_on:
         - mongo_db
+      volumes:
+      - ./certbot/www:/var/www/certbot # for letsencrypt certificates
 
     frontend:
       container_name: image-cropper-front
@@ -36,6 +38,9 @@ services:
         - "4200:80"
       depends_on:
         - backend
+      volumes:
+      - ./certbot/conf:/etc/letsencrypt # for certboot challenges
+      - ./certbot/www:/var/www/certbot # for letsencrypt certificates
         
     certbot:
       container_name: "certbot"
