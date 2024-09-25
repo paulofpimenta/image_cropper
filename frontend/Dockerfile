@@ -1,5 +1,5 @@
 ### STAGE 1:BUILD FRONT WITH NODE ###
-FROM node:alpine AS builder
+FROM node:20.13-alpine as build
 
 # Create (if it doesnt exists) a virtual directory inside the docker image. 
 # Commands such as COPY, RUN, etc will be done here
@@ -15,11 +15,17 @@ RUN npm install && \
 ### STAGE 2:RUN NGINX###
 FROM nginx:alpine
 
+
+RUN chown nginx:nginx /usr/share/nginx/html/*
+
 # Copy output bundle to nginx. Check 'outputPath' in angular.json file for output directory
 COPY --from=build /front/dist/image-cropper-ui /usr/share/nginx/html
 
+
 # Overwrite nginx.conf
 COPY /nginx.conf  /etc/nginx/conf.d/default.conf
+
+
 
 
 # ### STAGE 1:RUN ###
@@ -49,4 +55,4 @@ COPY /nginx.conf  /etc/nginx/conf.d/default.conf
 
 # EXPOSE 80
 
-CMD ["nginx", "-g", "daemon off;"]  
+# CMD ["nginx", "-g", "daemon off;"]  
