@@ -17,7 +17,7 @@ RUN npm install && \
 FROM nginx:alpine
 
 # Copy output bundle to nginx. Check 'outputPath' in angular.json file for output directory
-COPY --from=build /dist/src/app/dist/image-cropper-ui /usr/share/nginx/html
+COPY --from=build /front/dist/image-cropper-ui /usr/share/nginx/html
 
 # Overwrite nginx.conf
 COPY /nginx.conf  /etc/nginx/conf.d/default.conf
