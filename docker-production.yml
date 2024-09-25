@@ -1,6 +1,6 @@
 services:
     mongo_db: # Create a mongodb instance. Move to a dockerfile ?
-      container_name: image-cropper-mongodb
+      container_name: image-cropper-mongodb-prod
       image: mongo
       hostname: mongo
       restart: always
@@ -16,21 +16,21 @@ services:
         MONGO_USER_PWD: ${MONGO_USER_PWD}
 
     backend:
-      container_name: image-cropper-back
+      container_name: image-cropper-back-prod
       build:
         context: ./backend/image
         dockerfile: ./Dockerfile
         args:
           - ENV=prod
       ports:
-        - "8080:8080"
+        - "8080:80"
       depends_on:
         - mongo_db
       volumes:
       - ./certbot/www:/var/www/certbot # for letsencrypt certificates
 
     frontend:
-      container_name: image-cropper-front
+      container_name: image-cropper-front-prod
       build:
         context: ./frontend
         dockerfile: ./Dockerfile

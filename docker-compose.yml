@@ -1,6 +1,6 @@
 services:
     backend:
-      container_name: image-cropper-back
+      container_name: image-cropper-back-dev
       build:
         context: ./backend/image
         dockerfile: ./Dockerfile
@@ -10,7 +10,7 @@ services:
         - "8080:8080"
 
     frontend:
-      container_name: image-cropper-front
+      container_name: image-cropper-front-dev
       build:
         context: ./frontend
         dockerfile: ./Dockerfile
