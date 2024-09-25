@@ -6,7 +6,7 @@ import { ImageCroppedEvent } from 'ngx-image-cropper';
 import { InfoDetails } from '../model/InfoDetails';
 
 
-const baseUrl = 'http://localhost:8080/api/v1/image';
+const baseUrl = 'http://app3.ouicodedata.com:8080/api/v1/image';
 
 
 @Injectable({
