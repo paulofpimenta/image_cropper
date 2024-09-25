@@ -23,7 +23,7 @@ services:
         args:
           - ENV=prod
       ports:
-          - "9000:80"
+          - "8080:80"
       depends_on:
         - mongo_db
       volumes:
@@ -35,7 +35,8 @@ services:
         context: ./frontend
         dockerfile: ./Dockerfile
       ports:
-        - "4200:80"
+        - 80:80
+        - 443:443
       volumes:
         - ./certbot/conf:/etc/letsencrypt # for certboot challenges
         - ./certbot/www:/var/www/certbot # for letsencrypt certificates

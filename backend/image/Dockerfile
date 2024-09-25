@@ -15,3 +15,5 @@ ARG ENV
 ENV profile=$ENV
 
 CMD ["./mvnw", "spring-boot:run", "-Dspring.profiles.active=${profile}"]
+
+EXPOSE 8080
