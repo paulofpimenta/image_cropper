@@ -1,5 +1,5 @@
 services:
-    mongo_db: # Create a mongodb instance. Move to a dockerfile ?
+    mongo_db:
       container_name: image-cropper-mongodb-prod
       image: mongo
       hostname: mongo
