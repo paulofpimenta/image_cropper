@@ -23,7 +23,7 @@ services:
         args:
           - ENV=prod
       ports:
-        - "8080:80"
+          - "9000:80"
       depends_on:
         - mongo_db
       volumes:

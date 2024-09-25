@@ -1,5 +1,5 @@
 ### STAGE 1:BUILD FRONT WITH NODE ###
-FROM node:alpine as build
+FROM node:alpine AS builder
 
 # Create (if it doesnt exists) a virtual directory inside the docker image. 
 # Commands such as COPY, RUN, etc will be done here
@@ -11,7 +11,6 @@ COPY . .
 # Install and run. Check angular.js
 RUN npm install && \
     npm run build
-
 
 ### STAGE 2:RUN NGINX###
 FROM nginx:alpine
