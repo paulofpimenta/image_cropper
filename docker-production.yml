@@ -1,6 +1,6 @@
 services:
     mongo_db:
-      container_name: image-cropper-mongodb-prod
+      container_name: image-mongodb-prod
       image: mongo
       hostname: mongo
       restart: always
@@ -16,7 +16,7 @@ services:
         MONGO_USER_PWD: ${MONGO_USER_PWD}
 
     backend:
-      container_name: image-cropper-back-prod
+      container_name: image-back-prod
       build:
         context: ./backend/image
         dockerfile: ./Dockerfile
@@ -27,21 +27,19 @@ services:
       depends_on:
         - mongo_db
       volumes:
-      - ./certbot/www:/var/www/certbot # for letsencrypt certificates
+        - ./certbot/www:/var/www/certbot # for letsencrypt certificates
 
     frontend:
-      container_name: image-cropper-front-prod
+      container_name: image-front-prod
       build:
         context: ./frontend
         dockerfile: ./Dockerfile
       ports:
         - "4200:80"
-      depends_on:
-        - backend
       volumes:
-      - ./certbot/conf:/etc/letsencrypt # for certboot challenges
-      - ./certbot/www:/var/www/certbot # for letsencrypt certificates
-     depends_on:
+        - ./certbot/conf:/etc/letsencrypt # for certboot challenges
+        - ./certbot/www:/var/www/certbot # for letsencrypt certificates
+      depends_on:
         - backend
 
     certbot:
