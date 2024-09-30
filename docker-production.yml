@@ -28,7 +28,7 @@ services:
         - mongo_db
       volumes:
         - ./backend:/usr/src/app
-        - ./certbot/www:/etc/letsencrypt/live/${DOMAIN} # Map letsencrypt certificates (front) to a new volume (back)
+        - certs:/etc/letsencrypt/certificates # Map letsencrypt certificates (front) to a new volume (back)
 
     frontend:
       container_name: image-front-prod
@@ -42,6 +42,7 @@ services:
         - ./certbot/conf:/etc/letsencrypt # for certboot challenges
         - ./certbot/www:/var/www/certbot # for letsencrypt certificates
         - ./etc/ssl/certs:/etc/ssl/certs
+        - certs:/etc/letsencrypt/live/${DOMAIN}
       depends_on:
         - backend
 
@@ -54,3 +55,6 @@ services:
       command: certonly --webroot -w /var/www/certbot -d ${DOMAIN} --force-renew --agree-tos --email ${EMAIL}
       depends_on:
         - frontend
+
+volumes:
+  certs:
