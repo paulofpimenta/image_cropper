@@ -28,7 +28,7 @@ services:
         - mongo_db
       volumes:
         - ./backend:/usr/src/app
-        - frontend:./certs/${DOMAIN} # Map letsencrypt certificates (front) to a new volume (back)
+        - ./certbot/www:./certs/${DOMAIN} # Map letsencrypt certificates (front) to a new volume (back)
 
     frontend:
       container_name: image-front-prod
