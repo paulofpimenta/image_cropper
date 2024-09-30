@@ -42,7 +42,7 @@ services:
         - ./certbot/conf:/etc/letsencrypt # for certboot challenges
         - ./certbot/www:/var/www/certbot # for letsencrypt certificates
         - ./etc/ssl/certs:/etc/ssl/certs
-        - certs:/etc/letsencrypt/live/${DOMAIN}
+        - certs:/etc/letsencrypt/live
       depends_on:
         - backend
 
