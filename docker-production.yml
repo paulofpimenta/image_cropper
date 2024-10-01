@@ -27,7 +27,6 @@ services:
       depends_on:
         - mongo_db
       volumes:
-        - certificate-files:/etc/letsencrypt # for certboot challenges
         - ./backend:/usr/src/app
         - ./certbot/www:/var/www/certbot # for letsencrypt certificates
 
@@ -40,7 +39,7 @@ services:
         - 80:80
         - 443:443
       volumes:
-        - certificate-files:/etc/letsencrypt # for certboot challenges
+        - ./certbot/conf:/etc/letsencrypt # for certboot challenges
         - ./certbot/www:/var/www/certbot # for letsencrypt certificates
         - ./etc/ssl/certs:/etc/ssl/certs
       depends_on:
@@ -50,11 +49,8 @@ services:
       container_name: "certbot"
       image: certbot/certbot
       volumes:
-        - certificate-files:/etc/letsencrypt # for certboot challenges
+        - ./certbot/conf:/etc/letsencrypt # for certboot challenges
         - ./certbot/www:/var/www/certbot # for letsencrypt certificates
       command: certonly --webroot -w /var/www/certbot -d ${DOMAIN} --dry-run --agree-tos --email ${EMAIL}
       depends_on:
         - frontend
-
-volumes:
-  certificate-files:
